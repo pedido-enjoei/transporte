@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Pagamento de Envio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+    --roxo:#61005D;
+    --roxo-escuro:#4a0047;
+    --borda:#e5e5e5;
+}
+
+*{
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    margin:0;
+    background:#ffffff;
+    color:#333;
+}
+
+/* LOGO */
+.header{
+    display:flex;
+    justify-content:center;
+    padding:18px 0 10px;
+}
+
+.header img{
+    height:42px;
+}
+
+/* CONTAINER */
+.container{
+    max-width:420px;
+    margin:0 auto;
+    padding:16px;
+}
+
+/* TÍTULO */
+.title{
+    font-size:16px;
+    margin-bottom:12px;
+}
+
+/* BOX */
+.box{
+    border:1px solid var(--borda);
+    border-radius:6px;
+    padding:14px;
+    margin-bottom:16px;
+}
+
+/* OPÇÕES */
+.option{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid var(--borda);
+}
+
+.option:last-child{
+    border-bottom:none;
+}
+
+.option label{
+    font-size:14px;
+    cursor:pointer;
+}
+
+.option span{
+    font-size:14px;
+    color:var(--roxo);
+}
+
+/* BOTÃO */
+button{
+    width:100%;
+    padding:12px;
+    border-radius:6px;
+    border:none;
+    background:var(--roxo);
+    color:#fff;
+    font-size:14px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:var(--roxo-escuro);
+}
+
+/* PIX */
+.pix-box{
+    display:none;
+    text-align:center;
+    border-top:1px solid var(--borda);
+    padding-top:16px;
+}
+
+.pix-box img{
+    width:220px;
+    max-width:100%;
+    margin:12px 0;
+}
+
+/* AVISO */
+.notice{
+    margin-top:12px;
+    padding:10px;
+    border-radius:6px;
+    background:#f6eef5;
+    color:#61005D;
+    font-size:13px;
+    border:1px solid #e1c8de;
+}
+
+@media(max-width:480px){
+    .container{padding:12px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGO -->
+<div class="header">
+    <img src="logo.png" alt="Logo">
+</div>
+
+<div class="container">
+
+    <div class="title">Pagamento do Envio</div>
+
+    <!-- ESCOLHA DO ENVIO -->
+    <div class="box">
+        <strong>Escolha o tipo de envio:</strong>
+
+        <!-- ENVIO EXPRESS -->
+        <div class="option">
+            <label>
+                <input type="radio" name="envio" value="express" data-valor="29.90">
+                Envio Express (1 a 3 dias úteis)
+            </label>
+            <span>R$ 29,90</span>
+        </div>
+
+        <!-- ENVIO NORMAL -->
+        <div class="option">
+            <label>
+                <input type="radio" name="envio" value="normal" data-valor="14.90">
+                Envio Normal (5 a 8 dias úteis)
+            </label>
+            <span>R$ 14,90</span>
+        </div>
+    </div>
+
+    <!-- PIX -->
+    <div id="pixBox" class="pix-box">
+        <div><strong>Total a pagar:</strong></div>
+        <div style="font-size:18px;color:#61005D;margin:6px 0;">
+            R$ <span id="total">0,00</span>
+        </div>
+
+        <!-- QR CODE -->
+        <img src="qrcode.png" alt="QR Code Pix">
+
+        <!-- CÓDIGO PIX -->
+        <pre id="codigo" style="display:none;">SEU_CODIGO_PIX_AQUI</pre>
+
+        <button id="copiar">Copiar código Pix</button>
+
+        <div class="notice">
+            Após realizar o pagamento, envie o comprovante no chat para confirmação do envio.
+        </div>
+    </div>
+
+</div>
+
+<script>
+const radios = document.querySelectorAll('input[name="envio"]');
+const pixBox = document.getElementById("pixBox");
+const totalEl = document.getElementById("total");
+const btnCopiar = document.getElementById("copiar");
+const codigo = document.getElementById("codigo");
+
+/* MOSTRAR PIX APÓS ESCOLHER ENVIO */
+radios.forEach(radio=>{
+    radio.addEventListener("change",()=>{
+        const valor = parseFloat(radio.dataset.valor);
+        totalEl.textContent = valor.toFixed(2).replace(".",",");
+        pixBox.style.display = "block";
+    });
+});
+
+/* COPIAR CÓDIGO */
+btnCopiar.onclick = ()=>{
+    navigator.clipboard.writeText(codigo.textContent.trim());
+    btnCopiar.textContent = "Código copiado";
+};
+</script>
+
+</body>
+</html>
